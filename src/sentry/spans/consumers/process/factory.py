@@ -2,7 +2,6 @@ import logging
 import time
 from collections.abc import Mapping
 from functools import partial
-from typing import Annotated
 
 import msgspec
 import sentry_sdk
@@ -235,7 +234,7 @@ def process_batch(
 
 
 class SpanAttributeValue(msgspec.Struct, gc=False):
-    value: Annotated[str, msgspec.Meta(pattern=r"\A[0-9a-fA-F]{16}\Z")] | None = None
+    value: str | None = None
 
 
 class SpanAttributes(msgspec.Struct, gc=False):

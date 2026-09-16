@@ -64,26 +64,17 @@ export function replayerStepper<
       cleanupReplayer();
     };
 
-    const frameRef: FrameRef<Frame> = {
-      current: undefined,
-    };
-
     const nextOrDone = () => {
-      let next = nextFrame();
-      while (next && !shouldVisitFrame(next, replayer)) {
-        next = nextFrame();
-      }
+      const next = nextFrame();
       if (next) {
-        const frame = next;
-        frameRef.current = frame;
-        window.requestAnimationFrame(() => {
-          const timestamp =
-            'offsetMs' in frame ? frame.offsetMs : frame.timestamp - startTimestampMs;
-          replayer.pause(timestamp);
-        });
+        considerFrame(next);
       } else {
         onDone();
       }
+    };
+
+    const frameRef: FrameRef<Frame> = {
+      current: undefined,
     };
 
     const considerFrame = (frame: Frame) => {
